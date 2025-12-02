@@ -1,5 +1,5 @@
 {
-  "extends": "@aoc/tsconfig/aoc.json",
+  "extends": "@aoc/tsconfig/compiled-package.json",
   "include": ["src"],
   "exclude": ["node_modules"]
 }

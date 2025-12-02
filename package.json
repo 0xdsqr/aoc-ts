@@ -3,10 +3,24 @@
   "module": "index.ts",
   "type": "module",
   "workspaces": [
+    "packages/cli",
+    "packages/utils",
+    "packages/2024",
     "packages/2025",
     "tooling/typescript"
   ],
+  "scripts": {
+    "build": "bun run --filter='@aoc/*' --filter='@dsqr/*' build",
+    "clean": "rm -rf packages/*/dist packages/*/coverage",
+    "scaffold": "bun packages/utils/src/cli/aoc-cli.ts scaffold",
+    "run:2024": "bun packages/2024/src/index.ts",
+    "run:2025": "bun packages/2025/src/index.ts",
+    "run:all": "bun run run:2024 && bun run run:2025",
+    "changeset": "changeset",
+    "release": "bun run build && changeset version && changeset publish"
+  },
   "devDependencies": {
+    "@changesets/cli": "2.29.8",
     "@types/bun": "latest"
   },
   "peerDependencies": {
