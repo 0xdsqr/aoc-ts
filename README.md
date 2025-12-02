@@ -1,50 +1,47 @@
 # Advent of Code 2025
 
-Solving Advent of Code puzzles with TypeScript.
+Solving Advent of Code puzzles with TypeScript and Bun.
 
 ## ⇁ Packages
 
-**[@dsqr/aoc-utils](./packages/utils/README.md)** - Input utilities
-Published on npm as `@dsqr/aoc-utils`
+**[@dsqr/aoc-utils](./packages/utils/README.md)** - Input utilities library (published on npm)
 
-**@aoc/2025** - 2025 puzzle solutions
+**[@aoc/2025](./packages/2025/README.md)** - 2025 puzzle solutions
 
-## ⇁ Setup
+**[@aoc/2024](./packages/2024/README.md)** - 2024 puzzle solutions
+
+**[@aoc/cli](./packages/cli/README.md)** - Type-safe CLI framework
+
+## ⇁ Quick Start
 
 Install dependencies:
 ```bash
 bun install
 ```
 
-## ⇁ Scaffold a New Day
-
+Set your AoC session cookie:
 ```bash
-bun packages/utils/src/cli/index.ts scaffold 2
-bun packages/utils/src/cli/index.ts scaffold 3
+export AOC_SESSION=your_cookie_here
 ```
 
-Or use the alias:
+Get your session cookie from https://adventofcode.com (DevTools → Cookies → session)
+
+Run a solution:
 ```bash
-bun packages/utils/src/cli/index.ts new 25
+bun packages/2025/src/day-one/solution-one.ts
 ```
 
-## ⇁ Running Solutions
+## ⇁ Create a New Day
 
 ```bash
-bun run packages/2025/src/day-one/solution-one.ts
-bun run packages/2025/src/day-one/solution-two.ts
+bun packages/utils/src/cli/aoc-cli.ts scaffold 2
 ```
 
 ## ⇁ Testing
 
-Run all tests:
+Run all tests with coverage:
 ```bash
-bun test
-```
-
-Run tests for a specific day:
-```bash
-bun test packages/2025/src/day-one
+bun test --coverage
 ```
 
 Watch mode:
@@ -52,23 +49,12 @@ Watch mode:
 bun test --watch
 ```
 
-## ⇁ Development
+## ⇁ Build
 
 Build all packages:
 ```bash
 bun run build
 ```
-
-## ⇁ Getting AoC Input
-
-Set your session cookie to fetch puzzle input directly from AoC:
-```bash
-export AOC_SESSION=your_session_cookie_here
-```
-
-Get your session cookie from https://adventofcode.com (DevTools → Application → Cookies → session)
-
-Then use `forEachAocLine()` from `@dsqr/aoc-utils` to read it.
 
 ## ⇁ Development with Nix
 
@@ -78,10 +64,7 @@ nix flake update
 direnv allow
 ```
 
-This provides:
-- Bun - Ultra-fast JavaScript runtime
-- Node.js - TypeScript support
-- Biome - Linting and formatting
+This provides Bun, Node.js, and Biome.
 
 ## ⇁ License
 

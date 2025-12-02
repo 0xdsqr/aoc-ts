@@ -1,86 +1,91 @@
-async function* readFromFile(path: string) {
-  const file = Bun.file(path)
-  const text = await file.text()
+/**
+ * Utility functions for reading and processing line-based input.
+ */
 
-  for (const line of text.split("\n")) {
-    const trimmed = line.trim()
-    if (trimmed) yield trimmed
-  }
+type LineCallback = (line: string, index: number) => Promise<void> | void
+
+interface ReadOptions {
+  skipEmpty?: boolean
 }
 
-async function* readFromUrl(url: string) {
-  const response = await fetch(url)
-  if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`)
-  const text = await response.text()
-
-  for (const line of text.split("\n")) {
-    const trimmed = line.trim()
-    if (trimmed) yield trimmed
-  }
-}
-
-async function forEachFileLine(
+async function* readFromFile(
   path: string,
-  fn: (line: string) => Promise<void> | void,
-) {
-  for await (const line of readFromFile(path)) {
-    await fn(line)
+  { skipEmpty = true }: ReadOptions = {}
+): AsyncGenerator<string> {
+  const text = await Bun.file(path).text()
+
+  for (const line of text.split("\n")) {
+    const trimmed = line.trim()
+    if (!skipEmpty || trimmed) yield trimmed
   }
 }
 
-async function forEachUrlLine(
+async function* readFromUrl(
   url: string,
-  fn: (line: string) => Promise<void> | void,
-) {
-  for await (const line of readFromUrl(url)) {
-    await fn(line)
+  { skipEmpty = true }: ReadOptions = {}
+): AsyncGenerator<string> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`)
+  }
+
+  const text = await response.text()
+  for (const line of text.split("\n")) {
+    const trimmed = line.trim()
+    if (!skipEmpty || trimmed) yield trimmed
   }
 }
 
-async function* readAocInput(day: number, year: number = 2025) {
+async function* readAocInput(
+  day: number,
+  year = 2025,
+  { skipEmpty = true }: ReadOptions = {}
+): AsyncGenerator<string> {
   const session = process.env.AOC_SESSION
   if (!session) {
     throw new Error(
-      "AOC_SESSION environment variable required. Get your session cookie from https://adventofcode.com (DevTools → Application → Cookies → session) and set: export AOC_SESSION=your_cookie",
+      "AOC_SESSION required. Get from https://adventofcode.com cookies"
     )
   }
 
-  const url = `https://adventofcode.com/${year}/day/${day}/input`
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (compatible; AoC Solver)",
-      Cookie: `session=${session}`,
-    },
-  })
+  const response = await fetch(
+    `https://adventofcode.com/${year}/day/${day}/input`,
+    {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; AoC Solver)",
+        Cookie: `session=${session}`,
+      },
+    }
+  )
 
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch AoC input: ${response.status} ${response.statusText}`,
-    )
+    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`)
   }
 
   const text = await response.text()
   for (const line of text.split("\n")) {
     const trimmed = line.trim()
-    if (trimmed) yield trimmed
+    if (!skipEmpty || trimmed) yield trimmed
   }
 }
 
-async function forEachAocLine(
-  day: number,
-  fn: (line: string) => Promise<void> | void,
-  year: number = 2025,
-) {
-  for await (const line of readAocInput(day, year)) {
-    await fn(line)
+async function forEach(
+  generator: AsyncGenerator<string>,
+  fn: LineCallback
+): Promise<void> {
+  let index = 0
+  for await (const line of generator) {
+    await fn(line, index++)
   }
 }
 
-export {
-  readFromFile,
-  readFromUrl,
-  forEachFileLine,
-  forEachUrlLine,
-  readAocInput,
-  forEachAocLine,
+async function toArray(generator: AsyncGenerator<string>): Promise<string[]> {
+  const result: string[] = []
+  for await (const item of generator) {
+    result.push(item)
+  }
+  return result
 }
+
+export { readFromFile, readFromUrl, readAocInput, forEach, toArray }
+export type { ReadOptions, LineCallback }

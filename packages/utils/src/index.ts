@@ -1,12 +1,12 @@
+export type { CommandInput } from "@aoc/cli"
+export { logger, spinner } from "@aoc/cli"
+export { assert, assertEqual } from "./assert.js"
+export { AocError } from "./error.js"
 export {
-  forEachAocLine,
-  forEachFileLine,
-  forEachUrlLine,
+  forEach,
   readAocInput,
   readFromFile,
   readFromUrl,
+  toArray,
 } from "./read-input.js"
-export { assert, assertEqual } from "./assert.js"
-export { AocError } from "./error.js"
-export { logger, spinner } from "@aoc/cli"
-export type { CommandInput } from "@aoc/cli"
+export type { LineCallback, ReadOptions } from "./read-input.js"

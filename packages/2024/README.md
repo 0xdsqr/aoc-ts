@@ -4,23 +4,24 @@ Advent of Code 2024 solutions in TypeScript.
 
 ## Setup
 
-Get your session cookie from https://adventofcode.com (DevTools → Application → Cookies → session):
-
+Set your session cookie:
 ```bash
 export AOC_SESSION=your_cookie_here
 ```
 
+Get your cookie from https://adventofcode.com (DevTools → Cookies → session)
+
 ## Running Solutions
 
 ```bash
-bun run packages/2024/src/day-one/solution-one.ts
-bun run packages/2024/src/day-one/solution-two.ts
+bun packages/2024/src/day-one/solution-one.ts
+bun packages/2024/src/day-one/solution-two.ts
 ```
 
-## Scaffolding New Days
+## Creating New Days
 
 ```bash
-bun run scaffold <day> --year=2024
+bun packages/utils/src/cli/aoc-cli.ts scaffold 2
 ```
 
 ## Structure
@@ -31,10 +32,9 @@ src/
 │   ├── solution-one.ts
 │   └── solution-two.ts
 ├── day-two/
-├── ...
 └── index.ts
 ```
 
 ## License
 
-MIT
+Do whatever you want with it. MIT.

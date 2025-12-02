@@ -1,6 +1,6 @@
+import { assertEqual, logger } from "@dsqr/aoc-utils"
 import { solutionOne as day1Part1 } from "./day-one/solution-one.js"
 import { solutionTwo as day1Part2 } from "./day-one/solution-two.js"
-import { logger, assertEqual } from "@dsqr/aoc-utils"
 
 async function runAllSolutions() {
   logger.log("=== AoC 2025 ===")

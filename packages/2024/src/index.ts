@@ -1,12 +1,12 @@
-import { solutionOne as day1Part1 } from "./day-one/solution-one.js"
-import { solutionOne as day2Part1 } from "./day-two/solution-one.js"
-import { solutionOne as day3Part1 } from "./day-three/solution-one.js"
+import { assertEqual, logger } from "@dsqr/aoc-utils"
 import { solutionOne as day4Part1 } from "./day-four/solution-one.js"
-import { solutionTwo as day1Part2 } from "./day-one/solution-two.js"
-import { solutionTwo as day2Part2 } from "./day-two/solution-two.js"
-import { solutionTwo as day3Part2 } from "./day-three/solution-two.js"
 import { solutionTwo as day4Part2 } from "./day-four/solution-two.js"
-import { logger, assertEqual } from "@dsqr/aoc-utils"
+import { solutionOne as day1Part1 } from "./day-one/solution-one.js"
+import { solutionTwo as day1Part2 } from "./day-one/solution-two.js"
+import { solutionOne as day3Part1 } from "./day-three/solution-one.js"
+import { solutionTwo as day3Part2 } from "./day-three/solution-two.js"
+import { solutionOne as day2Part1 } from "./day-two/solution-one.js"
+import { solutionTwo as day2Part2 } from "./day-two/solution-two.js"
 
 async function runAllSolutions() {
   logger.log("=== AoC 2024 ===")

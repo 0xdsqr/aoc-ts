@@ -1,18 +1,24 @@
-import { forEachAocLine } from "@dsqr/aoc-utils"
+import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
 async function solutionOne(): Promise<number> {
   const grid: string[] = []
 
-  await forEachAocLine(4, (line: string) => {
+  await forEach(readAocInput(4, 2024), (line: string) => {
     grid.push(line)
-  }, 2024)
+  })
 
   let count = 0
   const rows = grid.length
   const cols = grid[0]?.length || 0
   const allDirections = [
-    [0, 1], [0, -1], [1, 0], [-1, 0],
-    [1, 1], [1, -1], [-1, 1], [-1, -1],
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+    [1, 1],
+    [1, -1],
+    [-1, 1],
+    [-1, -1],
   ]
 
   for (let r = 0; r < rows; r++) {
@@ -21,8 +27,8 @@ async function solutionOne(): Promise<number> {
         let word = ""
         let valid = true
         for (let i = 0; i < 4; i++) {
-          const nr = r + i * dr
-          const nc = c + i * dc
+          const nr = r + i * dr!
+          const nc = c + i * dc!
           if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
             valid = false
             break

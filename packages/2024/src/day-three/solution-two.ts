@@ -1,10 +1,10 @@
-import { forEachAocLine, logger, assertEqual } from "@dsqr/aoc-utils"
+import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
 async function solutionTwo(): Promise<number> {
   let memory = ""
-  await forEachAocLine(3, (line: string) => {
+  await forEach(readAocInput(3, 2024), (line: string) => {
     memory += line
-  }, 2024)
+  })
 
   let enabled = true
   let totalSum = 0

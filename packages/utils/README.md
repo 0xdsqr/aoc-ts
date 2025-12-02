@@ -13,18 +13,20 @@ Lightweight async utilities for reading Advent of Code puzzle input from files, 
 ## ⇁ Quick Start
 
 ```typescript
-import { forEachAocLine } from "@dsqr/aoc-utils"
+import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
-await forEachAocLine(1, (line) => {
+await forEach(readAocInput(1), (line) => {
   console.log(line)
 })
 ```
 
 ## ⇁ API Reference
 
-<details><summary><strong>readFromFile</strong></summary>
+### Generators
 
-Async generator that reads a file line-by-line, skipping empty lines.
+<details><summary><strong>readFromFile(path, options?)</strong></summary>
+
+Async generator that reads a file line-by-line.
 
 ```typescript
 import { readFromFile } from "@dsqr/aoc-utils"
@@ -35,15 +37,16 @@ for await (const line of readFromFile("./input.txt")) {
 ```
 
 **Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `path` | string | Path to the file |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `path` | string | - | Path to the file |
+| `options.skipEmpty` | boolean | true | Skip empty lines |
 
 </details>
 
-<details><summary><strong>readFromUrl</strong></summary>
+<details><summary><strong>readFromUrl(url, options?)</strong></summary>
 
-Async generator that fetches a URL and reads it line-by-line, skipping empty lines.
+Async generator that fetches a URL and reads it line-by-line.
 
 ```typescript
 import { readFromUrl } from "@dsqr/aoc-utils"
@@ -54,53 +57,14 @@ for await (const line of readFromUrl("https://example.com/data.txt")) {
 ```
 
 **Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `url` | string | URL to fetch |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `url` | string | - | URL to fetch |
+| `options.skipEmpty` | boolean | true | Skip empty lines |
 
 </details>
 
-<details><summary><strong>forEachFileLine</strong></summary>
-
-Process each line from a file with a callback function.
-
-```typescript
-import { forEachFileLine } from "@dsqr/aoc-utils"
-
-await forEachFileLine("./input.txt", (line) => {
-  console.log(line)
-})
-```
-
-**Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `path` | string | Path to the file |
-| `fn` | function | Callback executed for each line (can be async) |
-
-</details>
-
-<details><summary><strong>forEachUrlLine</strong></summary>
-
-Process each line from a URL with a callback function.
-
-```typescript
-import { forEachUrlLine } from "@dsqr/aoc-utils"
-
-await forEachUrlLine("https://example.com/data.txt", (line) => {
-  console.log(line)
-})
-```
-
-**Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `url` | string | URL to fetch |
-| `fn` | function | Callback executed for each line (can be async) |
-
-</details>
-
-<details><summary><strong>readAocInput</strong></summary>
+<details><summary><strong>readAocInput(day, year?, options?)</strong></summary>
 
 Async generator that fetches puzzle input from Advent of Code servers.
 
@@ -114,90 +78,82 @@ for await (const line of readAocInput(1, 2025)) {
 ```
 
 **Setup:**
-Get your session cookie from https://adventofcode.com (DevTools → Application → Cookies → session):
+Get your session cookie from https://adventofcode.com (DevTools → Cookies → session):
 ```bash
 export AOC_SESSION=your_cookie_here
 ```
 
 **Parameters:**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `day` | number | ✓ | Puzzle day (1-25) |
-| `year` | number | - | Puzzle year (default: 2025) |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `day` | number | - | Puzzle day (1-25) |
+| `year` | number | 2025 | Puzzle year |
+| `options.skipEmpty` | boolean | true | Skip empty lines |
 
 </details>
 
-<details><summary><strong>forEachAocLine</strong></summary>
+### Helpers
 
-Process each line from Advent of Code puzzle input with a callback function.
+<details><summary><strong>forEach(generator, callback)</strong></summary>
+
+Process each line from a generator with a callback function.
 
 ```typescript
-import { forEachAocLine } from "@dsqr/aoc-utils"
+import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
-await forEachAocLine(1, (line) => {
-  console.log(line)
-}, 2025)
-```
-
-**Setup:**
-Requires `AOC_SESSION` environment variable. Get it from https://adventofcode.com (DevTools → Application → Cookies → session):
-```bash
-export AOC_SESSION=your_cookie_here
-```
-
-**Parameters:**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `day` | number | ✓ | Puzzle day (1-25) |
-| `fn` | function | ✓ | Callback executed for each line (can be async) |
-| `year` | number | - | Puzzle year (default: 2025) |
-
-</details>
-
-## ⇁ CLI
-
-Install globally or use with `bun`:
-
-```bash
-bun packages/utils/src/cli/index.ts scaffold 2
-```
-
-Or after publishing:
-```bash
-npm install -g @dsqr/aoc-utils
-dsqr-aoc scaffold 2
-```
-
-<details><summary><strong>scaffold</strong></summary>
-
-Create a new day scaffold with solution and test files.
-
-```bash
-dsqr-aoc scaffold <day>
+await forEach(readAocInput(1), (line, index) => {
+  console.log(`Line ${index}: ${line}`)
+})
 ```
 
 **Parameters:**
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `day` | number | Day number (1-25) |
+| `generator` | AsyncGenerator | The source generator |
+| `callback` | (line: string, index: number) => Promise<void> \| void | Function called for each line |
 
-**Example:**
-```bash
-dsqr-aoc scaffold 2
+</details>
+
+<details><summary><strong>toArray(generator)</strong></summary>
+
+Collect all lines from a generator into an array.
+
+```typescript
+import { toArray, readFromFile } from "@dsqr/aoc-utils"
+
+const lines = await toArray(readFromFile("./input.txt"))
+console.log(lines)
 ```
 
-Creates:
+**Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `generator` | AsyncGenerator | The source generator |
+
+**Returns:**
+`Promise<string[]>` - Array of all lines
+
+</details>
+
+## ⇁ CLI
+
+Scaffold a new day:
+
+```bash
+bun packages/utils/src/cli/aoc-cli.ts scaffold 2
+```
+
+**Parameters:**
+- `day` (number) - Day number (1-25)
+
+Creates the directory structure:
 ```
 src/day-02/
   ├── solution-one.ts
   ├── solution-two.ts
   └── test/
-      ├── fixtures/
-      ├── solution-one.test.ts
-      └── solution-two.test.ts
+      └── fixtures/
 ```
-
-</details>
 
 ## ⇁ License
 

@@ -1,8 +1,13 @@
 import { logger } from "./index.js"
 
-function assert<T>(value: T, expected: T, message?: string): asserts value is T {
+function assert<T>(
+  value: T,
+  expected: T,
+  message?: string,
+): asserts value is T {
   if (value !== expected) {
-    const msg = message || `Assertion failed: expected ${expected}, got ${value}`
+    const msg =
+      message || `Assertion failed: expected ${expected}, got ${value}`
     logger.error(msg)
     throw new Error(msg)
   }

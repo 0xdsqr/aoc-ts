@@ -62,7 +62,11 @@ const dayNames = [
   "twenty-five",
 ]
 
-export async function scaffoldDay(dayNum: number, baseDir: string, year: string = "2025") {
+export async function scaffoldDay(
+  dayNum: number,
+  baseDir: string,
+  year: string = "2025",
+) {
   const dayName = `day-${dayNames[dayNum]}`
   const dayDir = join(baseDir, `packages/${year}/src`, dayName)
 
@@ -88,7 +92,11 @@ export async function scaffoldDay(dayNum: number, baseDir: string, year: string 
   return { dayName, dayDir }
 }
 
-function getNewIndexTemplate(year: string, dayNum: number, dayName: string): string {
+function getNewIndexTemplate(
+  year: string,
+  dayNum: number,
+  dayName: string,
+): string {
   return `import { solutionOne as day${dayNum}Part1 } from "./${dayName}/solution-one.js"
 import { solutionTwo as day${dayNum}Part2 } from "./${dayName}/solution-two.js"
 import { logger, assertEqual } from "@dsqr/aoc-utils"
@@ -109,7 +117,11 @@ await runAllSolutions()
 `
 }
 
-async function updateIndexWithDay(indexPath: string, dayNum: number, dayName: string) {
+async function updateIndexWithDay(
+  indexPath: string,
+  dayNum: number,
+  dayName: string,
+) {
   const content = await Bun.file(indexPath).text()
 
   const importLine = `import { solutionOne as day${dayNum}Part1 } from "./${dayName}/solution-one.js"`
@@ -118,12 +130,20 @@ async function updateIndexWithDay(indexPath: string, dayNum: number, dayName: st
   if (content.includes(`day${dayNum}Part1`)) return
 
   const lines = content.split("\n")
-  const lastImportIdx = lines.findIndex((l, i) => l.startsWith("import") && !lines[i + 1]?.startsWith("import"))
+  const lastImportIdx = lines.findIndex(
+    (l, i) => l.startsWith("import") && !lines[i + 1]?.startsWith("import"),
+  )
 
   lines.splice(lastImportIdx + 1, 0, importLine, importLine2)
 
-  const runFuncStart = lines.findIndex(l => l.includes("async function runAllSolutions"))
-  const lastLogIdx = lines.findLastIndex((l, i) => i < lines.length - 3 && (l.includes("logger.log") || l.includes("assertEqual")))
+  const runFuncStart = lines.findIndex((l) =>
+    l.includes("async function runAllSolutions"),
+  )
+  const lastLogIdx = lines.findLastIndex(
+    (l, i) =>
+      i < lines.length - 3 &&
+      (l.includes("logger.log") || l.includes("assertEqual")),
+  )
 
   const daySection = `\n  logger.log("\\nDay ${dayNum}:")
   const d${dayNum}p1 = await day${dayNum}Part1()

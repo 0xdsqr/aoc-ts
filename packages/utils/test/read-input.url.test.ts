@@ -1,9 +1,10 @@
 import { describe, expect, it } from "bun:test"
-import { forEachUrlLine, readFromUrl } from "../src/read-input"
+import { forEach, readFromUrl, toArray } from "../src/read-input"
 
-function createTestServer(
-  handler: (req: Request) => Response,
-): { url: string; stop: () => void } {
+function createTestServer(handler: (req: Request) => Response): {
+  url: string
+  stop: () => void
+} {
   const server = Bun.serve({
     port: 0,
     fetch: handler,
@@ -17,57 +18,116 @@ function createTestServer(
 describe("read-input - URL operations", () => {
   describe("readFromUrl", () => {
     it("should read lines from URL", async () => {
-      const server = createTestServer(() => new Response("url-line1\nurl-line2\n\nurl-line3"))
-      const lines: string[] = []
-      for await (const line of readFromUrl(server.url)) {
-        lines.push(line)
-      }
+      const server = createTestServer(
+        () => new Response("url-line1\nurl-line2\n\nurl-line3"),
+      )
+
+      const lines = await toArray(readFromUrl(server.url))
+
       expect(lines).toEqual(["url-line1", "url-line2", "url-line3"])
       server.stop()
     })
 
-    it("should skip blank lines from URL", async () => {
+    it("should skip blank lines by default", async () => {
       const server = createTestServer(() => new Response("line1\n\n\nline2\n"))
-      const lines: string[] = []
-      for await (const line of readFromUrl(server.url)) {
-        lines.push(line)
-      }
+
+      const lines = await toArray(readFromUrl(server.url))
+
       expect(lines).toEqual(["line1", "line2"])
       expect(lines).not.toContain("")
       server.stop()
     })
 
-    it("should handle non-200 responses", async () => {
-      const server = createTestServer(() => new Response("Not Found", { status: 404 }))
+    it("should include blank lines when skipEmpty is false", async () => {
+      const server = createTestServer(() => new Response("line1\n\nline2"))
+
+      const lines = await toArray(readFromUrl(server.url, { skipEmpty: false }))
+
+      expect(lines).toContain("")
+      expect(lines.length).toBe(3)
+      server.stop()
+    })
+
+    it("should trim whitespace from lines", async () => {
+      const server = createTestServer(() => new Response("  line1  \n  line2  "))
+
+      const lines = await toArray(readFromUrl(server.url))
+
+      expect(lines).toEqual(["line1", "line2"])
+      server.stop()
+    })
+
+    it("should throw error on non-200 response", async () => {
+      const server = createTestServer(
+        () => new Response("Not Found", { status: 404 }),
+      )
+
       try {
-        for await (const line of readFromUrl(server.url)) {
-        }
+        await toArray(readFromUrl(server.url))
         expect(false).toBe(true)
       } catch (error) {
-        expect((error as Error).message).toContain("Failed to fetch")
+        expect((error as Error).message).toContain("Failed to fetch: 404")
       }
+
+      server.stop()
+    })
+
+    it("should throw error on 500 response", async () => {
+      const server = createTestServer(
+        () => new Response("Server Error", { status: 500 }),
+      )
+
+      try {
+        await toArray(readFromUrl(server.url))
+        expect(false).toBe(true)
+      } catch (error) {
+        expect((error as Error).message).toContain("Failed to fetch: 500")
+      }
+
       server.stop()
     })
   })
 
-  describe("forEachUrlLine", () => {
-    it("should execute callback for each URL line", async () => {
-      const server = createTestServer(() => new Response("url-line1\nurl-line2"))
+  describe("forEach helper with readFromUrl", () => {
+    it("should execute callback for each line", async () => {
+      const server = createTestServer(
+        () => new Response("url-line1\nurl-line2"),
+      )
+
       const lines: string[] = []
-      await forEachUrlLine(server.url, (line) => {
+      await forEach(readFromUrl(server.url), (line) => {
         lines.push(line)
       })
+
       expect(lines).toEqual(["url-line1", "url-line2"])
       server.stop()
     })
 
     it("should handle async callbacks", async () => {
       const server = createTestServer(() => new Response("line1\nline2"))
+
       const lines: string[] = []
-      await forEachUrlLine(server.url, async (line) => {
+      await forEach(readFromUrl(server.url), async (line) => {
         lines.push(line.toUpperCase())
       })
+
       expect(lines).toEqual(["LINE1", "LINE2"])
+      server.stop()
+    })
+
+    it("should pass index to callback", async () => {
+      const server = createTestServer(() => new Response("a\nb\nc"))
+
+      const result: { line: string; index: number }[] = []
+      await forEach(readFromUrl(server.url), (line, index) => {
+        result.push({ line, index })
+      })
+
+      expect(result).toEqual([
+        { line: "a", index: 0 },
+        { line: "b", index: 1 },
+        { line: "c", index: 2 },
+      ])
       server.stop()
     })
   })

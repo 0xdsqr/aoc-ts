@@ -1,11 +1,11 @@
-import { forEachAocLine } from "@dsqr/aoc-utils"
+import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
 async function solutionTwo(): Promise<number> {
   const grid: string[] = []
 
-  await forEachAocLine(4, (line: string) => {
+  await forEach(readAocInput(4, 2024), (line: string) => {
     grid.push(line)
-  }, 2024)
+  })
 
   let count = 0
   const rows = grid.length
@@ -20,10 +20,13 @@ async function solutionTwo(): Promise<number> {
       const bl = grid[r + 1]![c - 1]
       const br = grid[r + 1]![c + 1]
 
-      const diag1 = tl + br
-      const diag2 = tr + bl
+      const diag1 = tl! + br!
+      const diag2 = tr! + bl!
 
-      if ((diag1 === "MS" || diag1 === "SM") && (diag2 === "MS" || diag2 === "SM")) {
+      if (
+        (diag1 === "MS" || diag1 === "SM") &&
+        (diag2 === "MS" || diag2 === "SM")
+      ) {
         count++
       }
     }

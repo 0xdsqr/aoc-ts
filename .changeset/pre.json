@@ -1,0 +1,15 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@aoc/2024": "0.0.0",
+    "@aoc/2025": "0.0.0",
+    "@aoc/cli": "0.0.1",
+    "@dsqr/aoc-utils": "0.0.0",
+    "@aoc/tsconfig": "0.0.0"
+  },
+  "changesets": [
+    "calm-lines-juggle",
+    "frank-cougars-cross"
+  ]
+}
