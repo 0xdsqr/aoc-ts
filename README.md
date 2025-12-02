@@ -31,6 +31,10 @@ Run a solution:
 bun packages/2025/src/day-one/solution-one.ts
 ```
 
+## ⇁ Was AI used?
+
+Nah, at least not yet lol. 
+
 ## ⇁ Create a New Day
 
 ```bash
