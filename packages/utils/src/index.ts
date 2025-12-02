@@ -3,6 +3,7 @@ export { logger, spinner } from "@aoc/cli"
 export { assert, assertEqual } from "./assert.js"
 export { AocError } from "./error.js"
 export {
+  first,
   forEach,
   readAocInput,
   readFromFile,

@@ -1,7 +1,3 @@
-/**
- * Utility functions for reading and processing line-based input.
- */
-
 type LineCallback = (line: string, index: number) => Promise<void> | void
 
 interface ReadOptions {
@@ -87,5 +83,12 @@ async function toArray(generator: AsyncGenerator<string>): Promise<string[]> {
   return result
 }
 
-export { readFromFile, readFromUrl, readAocInput, forEach, toArray }
+async function first(generator: AsyncGenerator<string>): Promise<string> {
+  for await (const line of generator) {
+    return line
+  }
+  throw new Error("No lines available in generator")
+}
+
+export { readFromFile, readFromUrl, readAocInput, forEach, toArray, first }
 export type { ReadOptions, LineCallback }

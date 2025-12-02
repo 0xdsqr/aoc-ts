@@ -119,10 +119,10 @@ await forEach(readAocInput(1), (line, index) => {
 Collect all lines from a generator into an array.
 
 ```typescript
-import { toArray, readFromFile } from "@dsqr/aoc-utils"
+import { toArray, readAocInput } from "@dsqr/aoc-utils"
 
-const lines = await toArray(readFromFile("./input.txt"))
-console.log(lines)
+const lines = await toArray(readAocInput(1))
+console.log(lines) // string[]
 ```
 
 **Parameters:**
@@ -132,6 +132,32 @@ console.log(lines)
 
 **Returns:**
 `Promise<string[]>` - Array of all lines
+
+</details>
+
+<details><summary><strong>first(generator)</strong></summary>
+
+Get the first line from a generator (useful for single-line inputs).
+
+```typescript
+import { first, readAocInput } from "@dsqr/aoc-utils"
+
+const line = await first(readAocInput(1))
+console.log(line) // string
+```
+
+Throws an error if the generator has no lines.
+
+**Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `generator` | AsyncGenerator | The source generator |
+
+**Returns:**
+`Promise<string>` - The first line
+
+**Throws:**
+`Error` - "No lines available in generator"
 
 </details>
 

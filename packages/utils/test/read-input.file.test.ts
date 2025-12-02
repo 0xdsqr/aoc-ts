@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "bun:test"
 import { join } from "path"
-import { forEach, readFromFile, toArray } from "../src/read-input"
+import { first, forEach, readFromFile, toArray } from "../src/read-input"
 
 describe("read-input - file operations", () => {
   const testFile = join(import.meta.dir, "./fixtures/test-input.txt")
@@ -81,6 +81,25 @@ describe("read-input - file operations", () => {
         { line: "line2", index: 1 },
         { line: "line3", index: 2 },
       ])
+    })
+  })
+
+  describe("first helper with readFromFile", () => {
+    it("should return the first line", async () => {
+      const line = await first(readFromFile(testFile))
+      expect(line).toBe("line1")
+    })
+
+    it("should throw when no lines available", async () => {
+      const emptyFile = join(import.meta.dir, "./fixtures/empty-first.txt")
+      await Bun.write(emptyFile, "")
+
+      try {
+        await first(readFromFile(emptyFile))
+        expect(false).toBe(true)
+      } catch (error) {
+        expect((error as Error).message).toContain("No lines available")
+      }
     })
   })
 })

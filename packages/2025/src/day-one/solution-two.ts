@@ -1,4 +1,4 @@
-import { assertEqual, forEach, readAocInput } from "@dsqr/aoc-utils"
+import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
 const wrap100 = (x: number) => ((x % 100) + 100) % 100
 

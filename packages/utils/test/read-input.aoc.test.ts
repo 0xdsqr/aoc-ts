@@ -227,4 +227,41 @@ describe("read-input - AoC operations", () => {
       globalThis.fetch = originalFetch
     })
   })
+
+  describe("first helper with readAocInput", () => {
+    it("should return the first line", async () => {
+      process.env.AOC_SESSION = "test-token"
+      const originalFetch = globalThis.fetch
+
+      globalThis.fetch = (async () => {
+        return new Response("first\nsecond\nthird")
+      }) as typeof fetch
+
+      const { first } = await import("../src/read-input")
+      const line = await first(readAocInput(1))
+
+      expect(line).toBe("first")
+      globalThis.fetch = originalFetch
+    })
+
+    it("should throw when no lines available", async () => {
+      process.env.AOC_SESSION = "test-token"
+      const originalFetch = globalThis.fetch
+
+      globalThis.fetch = (async () => {
+        return new Response("")
+      }) as typeof fetch
+
+      const { first } = await import("../src/read-input")
+
+      try {
+        await first(readAocInput(1))
+        expect(false).toBe(true)
+      } catch (error) {
+        expect((error as Error).message).toContain("No lines available")
+      }
+
+      globalThis.fetch = originalFetch
+    })
+  })
 })

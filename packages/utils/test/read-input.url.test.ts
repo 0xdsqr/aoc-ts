@@ -131,4 +131,30 @@ describe("read-input - URL operations", () => {
       server.stop()
     })
   })
+
+  describe("first helper with readFromUrl", () => {
+    it("should return the first line", async () => {
+      const server = createTestServer(
+        () => new Response("first\nsecond\nthird"),
+      )
+
+      const line = await first(readFromUrl(server.url))
+
+      expect(line).toBe("first")
+      server.stop()
+    })
+
+    it("should throw when no lines available", async () => {
+      const server = createTestServer(() => new Response(""))
+
+      try {
+        await first(readFromUrl(server.url))
+        expect(false).toBe(true)
+      } catch (error) {
+        expect((error as Error).message).toContain("No lines available")
+      }
+
+      server.stop()
+    })
+  })
 })
