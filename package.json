@@ -1,0 +1,16 @@
+{
+  "name": "aoc",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": [
+    "packages/2025",
+    "tooling/typescript"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true
+}
