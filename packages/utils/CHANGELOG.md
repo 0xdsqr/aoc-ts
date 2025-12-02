@@ -1,5 +1,11 @@
 # @dsqr/aoc-utils
 
+## 0.0.1-next.2
+
+### Patch Changes
+
+- c4ef5ed: a few more utils added and small clenaup with docs
+
 ## 0.0.1-next.1
 
 ### Patch Changes

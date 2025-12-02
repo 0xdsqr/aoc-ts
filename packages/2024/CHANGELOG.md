@@ -1,5 +1,12 @@
 # @aoc/2024
 
+## 0.0.1-next.2
+
+### Patch Changes
+
+- Updated dependencies [c4ef5ed]
+  - @dsqr/aoc-utils@0.0.1-next.2
+
 ## 0.0.1-next.1
 
 ### Patch Changes
