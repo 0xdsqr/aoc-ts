@@ -20,7 +20,7 @@ async function runAllSolutions() {
   assertEqual(d2p1, 28146997880)
   logger.log(`  Part 1: ${d2p1}`)
   const d2p2 = await day2Part2()
-  assertEqual(d2p2, 0)
+  assertEqual(d2p2, 40028128307)
   logger.log(`  Part 2: ${d2p2}`)
 }
 

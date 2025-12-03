@@ -1,42 +1,42 @@
-import { first, readAocInput } from "@dsqr/aoc-utils";
+import { first, readAocInput } from "@dsqr/aoc-utils"
 
 function range(start: number, end: number): number[] {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
 }
 
 function invalidID(num: number): number | null {
-  const s = String(num);
+  const s = String(num)
 
-  if (s.length % 2 !== 0) return null;
+  if (s.length % 2 !== 0) return null
 
-  const mid = s.length / 2;
-  const left = s.slice(0, mid);
-  const right = s.slice(mid);
+  const mid = s.length / 2
+  const left = s.slice(0, mid)
+  const right = s.slice(mid)
 
-  return left === right ? num : null;
+  return left === right ? num : null
 }
 
 export async function solutionOne(): Promise<number> {
-  const singleLine = (await first(readAocInput(2))).trim();
+  const singleLine = (await first(readAocInput(2))).trim()
 
-  let total = 0;
-  const ranges = singleLine.split(",");
+  let total = 0
+  const ranges = singleLine.split(",")
 
   ranges.forEach((block) => {
-    const cleaned = block.trim();
-    if (!cleaned) return;
+    const cleaned = block.trim()
+    if (!cleaned) return
 
-    const [startStr, endStr] = cleaned.split("-");
-    const start = Number(startStr);
-    const end = Number(endStr);
+    const [startStr, endStr] = cleaned.split("-")
+    const start = Number(startStr)
+    const end = Number(endStr)
 
     range(start, end).forEach((n) => {
-      const bad = invalidID(n);
+      const bad = invalidID(n)
       if (bad !== null) {
-        total += bad;
+        total += bad
       }
-    });
-  });
+    })
+  })
 
-  return total;
+  return total
 }

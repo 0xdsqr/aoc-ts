@@ -49,7 +49,9 @@ describe("read-input - URL operations", () => {
     })
 
     it("should trim whitespace from lines", async () => {
-      const server = createTestServer(() => new Response("  line1  \n  line2  "))
+      const server = createTestServer(
+        () => new Response("  line1  \n  line2  "),
+      )
 
       const lines = await toArray(readFromUrl(server.url))
 

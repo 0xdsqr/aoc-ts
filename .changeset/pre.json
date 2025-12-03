@@ -8,9 +8,5 @@
     "@dsqr/aoc-utils": "0.0.0",
     "@aoc/tsconfig": "0.0.0"
   },
-  "changesets": [
-    "calm-lines-juggle",
-    "frank-cougars-cross",
-    "soft-mice-reply"
-  ]
+  "changesets": ["calm-lines-juggle", "frank-cougars-cross", "soft-mice-reply"]
 }

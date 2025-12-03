@@ -2,6 +2,7 @@ export type { CommandInput } from "@aoc/cli"
 export { logger, spinner } from "@aoc/cli"
 export { assert, assertEqual } from "./assert.js"
 export { AocError } from "./error.js"
+export type { LineCallback, ReadOptions } from "./read-input.js"
 export {
   first,
   forEach,
@@ -10,4 +11,3 @@ export {
   readFromUrl,
   toArray,
 } from "./read-input.js"
-export type { LineCallback, ReadOptions } from "./read-input.js"

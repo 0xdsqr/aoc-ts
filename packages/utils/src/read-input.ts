@@ -6,7 +6,7 @@ interface ReadOptions {
 
 async function* readFromFile(
   path: string,
-  { skipEmpty = true }: ReadOptions = {}
+  { skipEmpty = true }: ReadOptions = {},
 ): AsyncGenerator<string> {
   const text = await Bun.file(path).text()
 
@@ -18,11 +18,13 @@ async function* readFromFile(
 
 async function* readFromUrl(
   url: string,
-  { skipEmpty = true }: ReadOptions = {}
+  { skipEmpty = true }: ReadOptions = {},
 ): AsyncGenerator<string> {
   const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch: ${response.status} ${response.statusText}`,
+    )
   }
 
   const text = await response.text()
@@ -35,12 +37,12 @@ async function* readFromUrl(
 async function* readAocInput(
   day: number,
   year = 2025,
-  { skipEmpty = true }: ReadOptions = {}
+  { skipEmpty = true }: ReadOptions = {},
 ): AsyncGenerator<string> {
   const session = process.env.AOC_SESSION
   if (!session) {
     throw new Error(
-      "AOC_SESSION required. Get from https://adventofcode.com cookies"
+      "AOC_SESSION required. Get from https://adventofcode.com cookies",
     )
   }
 
@@ -51,11 +53,13 @@ async function* readAocInput(
         "User-Agent": "Mozilla/5.0 (compatible; AoC Solver)",
         Cookie: `session=${session}`,
       },
-    }
+    },
   )
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch: ${response.status} ${response.statusText}`,
+    )
   }
 
   const text = await response.text()
@@ -67,7 +71,7 @@ async function* readAocInput(
 
 async function forEach(
   generator: AsyncGenerator<string>,
-  fn: LineCallback
+  fn: LineCallback,
 ): Promise<void> {
   let index = 0
   for await (const line of generator) {
