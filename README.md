@@ -26,9 +26,17 @@ export AOC_SESSION=your_cookie_here
 
 Get your session cookie from https://adventofcode.com (DevTools → Cookies → session)
 
-Run a solution:
+Run solutions:
 ```bash
+# Run all solutions for the year
+bun packages/2025/src/index.ts
+
+# Run a single day (both parts)
+bun packages/2025/src/day-one/index.ts
+
+# Run a specific part
 bun packages/2025/src/day-one/solution-one.ts
+bun packages/2025/src/day-one/solution-two.ts
 ```
 
 ## ⇁ Was AI used?

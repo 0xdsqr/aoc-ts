@@ -14,8 +14,15 @@ Get your cookie from https://adventofcode.com (DevTools → Cookies → session)
 ## Running Solutions
 
 ```bash
-bun packages/2025/src/day-one/solution-one.ts
-bun packages/2025/src/day-one/solution-two.ts
+# Run all solutions for the year
+bun src/index.ts
+
+# Run a single day (both parts)
+bun src/day-one/index.ts
+
+# Run a specific part
+bun src/day-one/solution-one.ts
+bun src/day-one/solution-two.ts
 ```
 
 ## Creating New Days
@@ -29,10 +36,14 @@ bun packages/utils/src/cli/aoc-cli.ts scaffold 2
 ```
 src/
 ├── day-one/
+│   ├── index.ts          # Run both parts of day one
 │   ├── solution-one.ts
 │   └── solution-two.ts
 ├── day-two/
-└── index.ts
+│   ├── index.ts          # Run both parts of day two
+│   ├── solution-one.ts
+│   └── solution-two.ts
+└── index.ts              # Run all days
 ```
 
 ## License
