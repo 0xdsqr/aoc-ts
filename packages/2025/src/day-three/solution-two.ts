@@ -9,25 +9,28 @@ function findMaxJoltage12(bank: string): bigint {
   let pos = 0
   let skipped = 0
 
-  for (let i = 0; i < keep; i++) {
-    const remaining = keep - i
+  Array.from({ length: keep }).forEach(() => {
+    const remaining = keep - result.length
     const canSkipMore = skip - skipped
     const searchEnd = Math.min(pos + canSkipMore, n - remaining)
 
     let maxDigit = bank[pos]
     let maxPos = pos
 
-    for (let j = pos; j <= searchEnd; j++) {
-      if (bank[j] > maxDigit) {
-        maxDigit = bank[j]
-        maxPos = j
-      }
-    }
+    bank
+      .slice(pos, searchEnd + 1)
+      .split("")
+      .forEach((digit, idx) => {
+        if (digit > maxDigit) {
+          maxDigit = digit
+          maxPos = pos + idx
+        }
+      })
 
     result += maxDigit
     skipped += maxPos - pos
     pos = maxPos + 1
-  }
+  })
 
   return BigInt(result)
 }

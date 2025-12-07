@@ -2,13 +2,14 @@ import { forEach, readAocInput } from "@dsqr/aoc-utils"
 
 function findMaxJoltage(bank: string): number {
   let max = 0
+  const digits = bank.split("")
 
-  for (let i = 0; i < bank.length - 1; i++) {
-    for (let j = i + 1; j < bank.length; j++) {
-      const jolts = Number(bank[i]) * 10 + Number(bank[j])
-      if (jolts > max) max = jolts
-    }
-  }
+  digits.forEach((digit1, i) => {
+    digits.slice(i + 1).forEach((digit2) => {
+      const jolts = Number(digit1) * 10 + Number(digit2)
+      max = Math.max(max, jolts)
+    })
+  })
 
   return max
 }
