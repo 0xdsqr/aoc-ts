@@ -6,6 +6,8 @@ async function runAllDays() {
   await import("./day-one/index.js")
   logger.log()
   await import("./day-two/index.js")
+  logger.log()
+  await import("./day-three/index.js")
 }
 
 await runAllDays()

@@ -41,7 +41,6 @@
     "dist"
   ],
   "dependencies": {
-    "@aoc/tsconfig": "workspace:*",
-    "@aoc/cli": "workspace:*"
+    "@aoc/tsconfig": "workspace:*"
   }
 }

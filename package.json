@@ -3,7 +3,6 @@
   "module": "index.ts",
   "type": "module",
   "workspaces": [
-    "packages/cli",
     "packages/utils",
     "packages/2024",
     "packages/2025",

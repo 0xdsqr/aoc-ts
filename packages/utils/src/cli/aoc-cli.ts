@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
-import { createCli } from "@aoc/cli"
-import { scaffoldDayCommand } from "./commands/scaffold"
+import { createCli } from "./create-cli.js"
+import { scaffoldDayCommand } from "./commands/scaffold.js"
 
 const cli = createCli({
   name: "dsqr-aoc",
